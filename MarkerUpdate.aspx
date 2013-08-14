@@ -3,89 +3,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-   <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false&language=en"></script>
-        <script type="text/javascript">
+<head id="Head1" runat="server">
+    <title></title>
+    <script src="jquery-1.7.1.min.js" type="text/javascript"></script>
+     <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script language="javascript">
+        $(document).ready(function() {
+            Plot();
+        });
 
-            var map,
-                currentPositionMarker,
-                mapCenter = new google.maps.LatLng(40.700683, -73.925972),
-                map;
+        function Plot() {
+            $.ajax({
+                type: "POST",
+                url: "WebService.asmx/GetLocation",
+                contentType: "application/xml; charset=utf-8",
+                dataType: "xml",
+                success: function(xml) {
+                    //alert($(xml).find('Latitude').text());
+                    var myLatlng = new google.maps.LatLng($(xml).find('Latitude').text(), $(xml).find('Longitude').text());
+                    var mapOptions = {
+                        zoom: 10,
+                        center: myLatlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-            function initializeMap()
-            {
-                map = new google.maps.Map(document.getElementById('map_canvas'), {
-                   zoom: 13,
-                   center: mapCenter,
-                   mapTypeId: google.maps.MapTypeId.ROADMAP
-                 });
-            }
-
-            function locError(error) {
-                // the current position could not be located
-                alert("The current position could not be found!");
-            }
-
-            function setCurrentPosition(pos) {
-                currentPositionMarker = new google.maps.Marker({
-                    map: map,
-                    position: new google.maps.LatLng(
-                        pos.coords.latitude,
-                        pos.coords.longitude
-                    ),
-                    title: "Current Position"
-                });
-                map.panTo(new google.maps.LatLng(
-                        pos.coords.latitude,
-                        pos.coords.longitude
-                    ));
-            }
-
-            function displayAndWatch(position) {
-                // set current position
-                setCurrentPosition(position);
-                // watch position
-                watchCurrentPosition();
-            }
-
-            function watchCurrentPosition() {
-                var positionTimer = navigator.geolocation.watchPosition(
-                    function (position) {
-                        setMarkerPosition(
-                            currentPositionMarker,
-                            position
-                        );
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        title: 'Hello World!'
                     });
-            }
 
-            function setMarkerPosition(marker, position) {
-                marker.setPosition(
-                    new google.maps.LatLng(
-                        position.coords.latitude,
-                        position.coords.longitude)
-                );
-            }
-
-            function initLocationProcedure() {
-                initializeMap();
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(displayAndWatch, locError);
-                } else {
-                    alert("Your browser does not support the Geolocation API");
+                    setTimeout(function() { Plot2(marker); }, 5000);
                 }
-            }
-
-            $(document).ready(function() {
-                initLocationProcedure();
             });
+           
+        }
 
-        </script>
+        function Plot2(marker) {
+            var new_marker_position = new google.maps.LatLng(10.012447, 76.426399);
+
+            marker.setPosition(new_marker_position);
+        }
+  </script>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    <div id="map_canvas" style="height:600px;"></div>
+    <div style="width:900px;margin:0 auto;">
+    <div id="map" style="width: 100%; height: 600px;"></div>
     </div>
     </form>
 </body>
