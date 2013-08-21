@@ -1,0 +1,24 @@
+﻿/*------------------POPUPS------------------------*/
+
+#fade {display: none;background: #000; position: fixed; left: 0; top: 0; z-index: 10;width: 100%; height: 100%;opacity: .80;z-index: 9999;}
+.popup_block
+{
+    width:407px;
+    height:240px;
+	display: none;
+	background: url(../images/login-bg.png);
+	float: left;
+	color:#000;
+	font-size: 12px;
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 99999;
+}
+.popup_block #LoginBox{margin:130px 0 0 150px;}
+.popup_block input[type=text], .popup_block input[type=password]{background-color: #FCFCFC; border: 1px solid #856971;font-size: 12px;font-weight: normal; height: 17px; padding: 1px 1px 1px; width: 193px;margin:2px 0;}
+img.btn_close {float: right; margin: -55px -55px 0 0;}
+.popup p {padding: 5px 10px;margin: 5px 0;}
+
+/*--Making IE6 Understand Fixed Positioning--*/
+*html #fade {position: absolute;}
+*html .popup_block {position: absolute;}
