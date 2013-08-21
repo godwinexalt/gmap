@@ -30,38 +30,18 @@ public class WebService : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public string HelloWorld() {
-        return "Hello World";
-    }
-
-    [WebMethod]
-    public XmlElement GetLocation()
+    public XmlElement GetCurrentPosition()
     {
-        DataTable dt = new DataTable();
-        //dt.Columns.Add("Lat");
-        //dt.Columns.Add("Lon");
-
-        //dt.Rows.Add(new object[] { "19.0018014", "72.914170300" });
-
         DataSet ds = new DataSet();
-        //ds.Tables.Add(dt);
         ds = FillDataSet("SELECT TOP 1 * FROM Location ORDER BY ID DESC");
         XmlElement xE = (XmlElement)Serialize(ds);
-        string strXml = xE.OuterXml.ToString();
         return xE;
     }
 
     [WebMethod]
-    public XmlElement GetPath()
+    public XmlElement GetRoute()
     {
-        DataTable dt = new DataTable();
-        //dt.Columns.Add("Lat");
-        //dt.Columns.Add("Lon");
-
-        //dt.Rows.Add(new object[] { "19.0018014", "72.914170300" });
-
         DataSet ds = new DataSet();
-        //ds.Tables.Add(dt);
         ds = FillDataSet("SELECT TOP 20 * FROM Location ORDER BY ID DESC");
         XmlElement xE = (XmlElement)Serialize(ds);
         string strXml = xE.OuterXml.ToString();

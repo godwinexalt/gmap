@@ -6,20 +6,20 @@
 <head id="Head1" runat="server">
     <title></title>
     <script src="jquery-1.7.1.min.js" type="text/javascript"></script>
-     <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    
     <script language="javascript">
         $(document).ready(function() {
-            Plot();
+            SetCurrentPosition();
         });
 
-        function Plot() {
+        function SetCurrentPosition() {
             $.ajax({
                 type: "POST",
-                url: "WebService.asmx/GetLocation",
+                url: "WebService.asmx/GetCurrentPosition",
                 contentType: "application/xml; charset=utf-8",
                 dataType: "xml",
                 success: function(xml) {
-                    //alert($(xml).find('Latitude').text());
                     var myLatlng = new google.maps.LatLng($(xml).find('Latitude').text(), $(xml).find('Longitude').text());
                     var mapOptions = {
                         zoom: 10,
@@ -31,21 +31,30 @@
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map,
-                        title: 'Hello World!'
+                        title: 'Vehicle'
                     });
 
-                    setTimeout(function() { Plot2(marker); }, 5000);
+                    UpdateCurrentPosition(marker);
                 }
             });
-           
         }
 
-        function Plot2(marker) {
-            var new_marker_position = new google.maps.LatLng(10.012447, 76.426399);
+        function UpdateCurrentPosition(marker) {
+            $.ajax({
+                type: "POST",
+                url: "WebService.asmx/GetCurrentPosition",
+                contentType: "application/xml; charset=utf-8",
+                dataType: "xml",
+                success: function(xml) {
+                    var new_marker_position = new google.maps.LatLng($(xml).find('Latitude').text(), $(xml).find('Longitude').text());
+                    marker.setPosition(new_marker_position);
+                }
+            });
 
-            marker.setPosition(new_marker_position);
-        }
+            setTimeout(function() { UpdateCurrentPosition(marker); }, 5000);
+        }    
   </script>
+  
 </head>
 <body>
     <form id="form1" runat="server">

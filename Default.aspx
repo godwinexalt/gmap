@@ -12,7 +12,7 @@
       $(document).ready(function() {
           $.ajax({
               type: "POST",
-              url: "WebService.asmx/GetLocation",
+              url: "WebService.asmx/GetCurrentPosition",
               contentType: "application/xml; charset=utf-8",
               dataType: "xml",
               success: function(xml) {

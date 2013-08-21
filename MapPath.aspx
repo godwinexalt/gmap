@@ -16,7 +16,7 @@
             
             $.ajax({
                 type: "POST",
-                url: "WebService.asmx/GetPath",
+                url: "WebService.asmx/GetRoute",
                 contentType: "application/xml; charset=utf-8",
                 dataType: "xml",
                 success: function(xml) {
